@@ -1,3 +1,4 @@
+```mermaid
 sequenceDiagram
     participant browser
     participant server
@@ -13,3 +14,4 @@ sequenceDiagram
 
     Note right of browser: The JavaScript pushes the new note to the notes array and re-renders the notes list on the page using the DOM API
     Note right of browser: No page reload occurs — the browser stays on the same page
+    ```
