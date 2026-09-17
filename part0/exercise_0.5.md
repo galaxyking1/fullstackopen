@@ -1,4 +1,3 @@
-@'
 # Exercise 0.5 - Loading the single-page app
 
 ```mermaid
@@ -24,4 +23,3 @@ sequenceDiagram
     deactivate server
     Note right of browser: The browser executes the event handler that renders the notes
 ```
-'@ | Set-Content -Path part0\exercise_0.5.md
