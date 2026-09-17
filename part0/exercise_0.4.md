@@ -1,4 +1,3 @@
-@'
 # Exercise 0.4 - New note in the traditional web app
 
 ```mermaid
@@ -30,4 +29,3 @@ sequenceDiagram
     deactivate server
     Note right of browser: The browser executes the callback function that renders the notes
 ```
-'@ | Set-Content -Path part0\exercise_0.4.md
