@@ -1,33 +1,27 @@
+@'
+# Exercise 0.5 - Loading the single-page app
+
+```mermaid
 sequenceDiagram
     participant browser
     participant server
-
-    Note right of browser: User types a note and clicks "Save"
-    browser->>server: POST https://studies.cs.helsinki.fi/exampleapp/new_note (Form Data)
-    activate server
-    server-->>browser: 302 Redirect to /notes
-    deactivate server
-
-    Note right of browser: Browser follows the redirect, causing a full page reload
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa
     activate server
     server-->>browser: HTML document
     deactivate server
-
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.css
     activate server
     server-->>browser: the css file
     deactivate server
-
-    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/main.js
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
     activate server
     server-->>browser: the JavaScript file
     deactivate server
-
-    Note right of browser: Browser executes JS, which fetches the updated data
+    Note right of browser: The browser starts executing spa.js which fetches the notes data from the server
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
-    server-->>browser: [{ "content": "New note", "date": "2023-10-25" }, ... ]
+    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
     deactivate server
-
-    Note right of browser: Browser executes callback to render the updated notes list
+    Note right of browser: The browser executes the event handler that renders the notes
+```
+'@ | Set-Content -Path part0\exercise_0.5.md
