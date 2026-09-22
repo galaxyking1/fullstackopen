@@ -32,4 +32,9 @@ src/
 
 - [x] 1.1 — Header, Content, Total components
 - [x] 1.2 — Extracted Part component
-- [ ] 1.3–1.5 — In progress
+
+## ✅ Exercises 1.3–1.5 — Data modeling with objects & arrays
+- 1.3: parts became objects; read via `props.part.name` / `.exercises`
+- 1.4: parts collected into one array; passed as a single `parts` prop
+- 1.5: entire course modeled as one object; children receive `course.name` / `course.parts`
+- Key lesson: **shape the data first; components follow the shape**
