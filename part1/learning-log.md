@@ -17,3 +17,11 @@
 - 1.4: parts collected into one array; passed as a single `parts` prop
 - 1.5: entire course modeled as one object; children receive `course.name` / `course.parts`
 - Key lesson: **shape the data first; components follow the shape**
+
+## ✅ Exercises 1.6–1.11 — Unicafe App (State & Events)
+- Mastered `useState` for component memory.
+- Learned the "Event Handler Trap" (always wrap setState in an arrow function).
+- Practiced "Lifting State Up" to the parent component.
+- Used conditional rendering (`if (total === 0) return...`) to handle empty states.
+- Extracted `Button` and `StatisticLine` components using compact arrow syntax.
+- Rendered dynamic data inside an HTML `<table>`.
