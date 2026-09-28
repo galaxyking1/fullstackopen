@@ -14,7 +14,7 @@ This repository documents my journey, exercises, and projects as I master modern
 | Part | Topic | Status | Folder |
 | :--- | :--- | :---: | :--- |
 | **Part 0** | Fundamentals of Web Apps | ✅ Completed | [part0](./part0) |
-| **Part 1** | Introduction to React |  In Progress | [part1](./part1) |
+| **Part 1** | Introduction to React | ✅ Completed | [part1](./part1) |
 | **Part 2** | Communicating with Server | ⏳ Pending | [part2](./part2) |
 | **Part 3** | Programming a Server with Node.js & Express |  Pending | [part3](./part3) |
 | **Part 4** | Testing Express Servers | ⏳ Pending | [part4](./part4) |
