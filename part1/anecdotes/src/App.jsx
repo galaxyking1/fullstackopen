@@ -11,18 +11,31 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]   
 
-  // State to track which index is currently selected
   const [selected, setSelected] = useState(0)
+  
+  // State for votes: an array of numbers, initialized to 0 for each anecdote
+  const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
 
   const getRandomIndex = () => {
     const index = Math.floor(Math.random() * anecdotes.length)
     setSelected(index)
   }
 
+  const handleVote = () => {
+    // 1. Copy the current points array
+    const newPoints = [...points]
+    // 2. Increment the vote for the currently selected anecdote
+    newPoints[selected] += 1
+    // 3. Update state with the NEW array
+    setPoints(newPoints)
+  }
+
   return (
     <div>
       <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
+      <p>has {points[selected]} votes</p>
+      <button onClick={handleVote}>vote</button>
       <button onClick={getRandomIndex}>next anecdote</button>
     </div>
   )
