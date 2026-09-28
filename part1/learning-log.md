@@ -25,3 +25,9 @@
 - Used conditional rendering (`if (total === 0) return...`) to handle empty states.
 - Extracted `Button` and `StatisticLine` components using compact arrow syntax.
 - Rendered dynamic data inside an HTML `<table>`.
+
+## ✅ Exercises 1.12–1.14 — Anecdotes App (Complex State)
+- Mastered complex state: storing arrays in `useState`.
+- Learned the golden rule of React: **Never mutate state directly**. Always create a new copy using the spread operator `[...oldState]`.
+- Used `Math.max(...array)` and `indexOf()` to find the highest voted item.
+- Practiced the full Git workflow: code → save → verify browser → commit → push.
