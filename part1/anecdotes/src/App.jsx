@@ -12,8 +12,6 @@ const App = () => {
   ]   
 
   const [selected, setSelected] = useState(0)
-  
-  // State for votes: an array of numbers, initialized to 0 for each anecdote
   const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
 
   const getRandomIndex = () => {
@@ -22,13 +20,14 @@ const App = () => {
   }
 
   const handleVote = () => {
-    // 1. Copy the current points array
     const newPoints = [...points]
-    // 2. Increment the vote for the currently selected anecdote
     newPoints[selected] += 1
-    // 3. Update state with the NEW array
     setPoints(newPoints)
   }
+
+  // Find the anecdote with the most votes
+  const maxVotes = Math.max(...points)
+  const maxIndex = points.indexOf(maxVotes)
 
   return (
     <div>
@@ -37,6 +36,10 @@ const App = () => {
       <p>has {points[selected]} votes</p>
       <button onClick={handleVote}>vote</button>
       <button onClick={getRandomIndex}>next anecdote</button>
+
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[maxIndex]}</p>
+      <p>has {maxVotes} votes</p>
     </div>
   )
 }
