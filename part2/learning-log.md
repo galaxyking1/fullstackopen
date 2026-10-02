@@ -11,3 +11,8 @@
 - `event.preventDefault()` stops the browser's page-reload form submission
 - Duplicate guard with `persons.some(...)` + `window.alert`
 - Immutable append with `concat`; form reset by clearing state
+## ✅ Exercise 2.8 — Phonebook meets the server
+- Two servers: Vite (5173, UI) + json-server (3001, REST over db.json)
+- `useEffect(fn, [])` fetches once after mount; side effects never during render
+- axios Promise payload lives in `response.data`
+- Extracted `src/services/persons.js` — URL lives in one place
