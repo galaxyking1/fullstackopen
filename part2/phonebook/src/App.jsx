@@ -1,34 +1,71 @@
 import { useState, useEffect } from 'react'
 import personsService from './services/persons'
 
+const Notification = ({ message, type }) => {
+  if (message === null) {
+    return null
+  }
+  return <div className={type}>{message}</div>
+}
+
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [message, setMessage] = useState(null)
+  const [messageType, setMessageType] = useState('success')
 
   useEffect(() => {
-    console.log('effect: fetching persons from server')
     personsService.getAll().then(setPersons)
   }, [])
+
+  const showNotification = (text, type) => {
+    setMessage(text)
+    setMessageType(type)
+    setTimeout(() => setMessage(null), 5000)
+  }
 
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (persons.some((person) => person.name === newName)) {
-      window.alert(`${newName} is already added to phonebook`)
+    const existing = persons.find((p) => p.name === newName)
+
+    if (existing) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const changed = { ...existing, number: newNumber }
+        personsService
+          .update(existing.id, changed)
+          .then((returned) => {
+            setPersons(persons.map((p) => (p.id === existing.id ? returned : p)))
+            showNotification(`Updated ${returned.name}`, 'success')
+          })
+          .catch(() => {
+            showNotification(`Information of ${existing.name} has already been removed from server`, 'error')
+            setPersons(persons.filter((p) => p.id !== existing.id))
+          })
+      }
+      setNewName('')
+      setNewNumber('')
       return
     }
-    const newPerson = { name: newName, number: newNumber, id: persons.length + 1 }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
-    setNewNumber('')
+
+    personsService
+      .create({ name: newName, number: newNumber })
+      .then((returned) => {
+        setPersons(persons.concat(returned))
+        setNewName('')
+        setNewNumber('')
+        showNotification(`Added ${returned.name}`, 'success')
+      })
+      .catch(() => showNotification('Could not add person to server', 'error'))
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} type={messageType} />
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNameChange} />
@@ -40,6 +77,7 @@ const App = () => {
           <button type="submit">add</button>
         </div>
       </form>
+      <h2>Numbers</h2>
       <ul>
         {persons.map((person) => (
           <li key={person.id}>
