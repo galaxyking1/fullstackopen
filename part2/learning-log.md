@@ -16,3 +16,10 @@
 - `useEffect(fn, [])` fetches once after mount; side effects never during render
 - axios Promise payload lives in `response.data`
 - Extracted `src/services/persons.js` — URL lives in one place
+## ✅ Exercises 2.9–2.10 — Phonebook: full CRUD + error handling
+- REST in practice: POST 201 create, PUT update, DELETE remove (Part 0 diagrams, alive)
+- Trust `response.data`: server assigns ids, UI mirrors server truth
+- `.catch()` on every Promise; styled red/green Notification with 5s auto-clear
+- Duplicate name → `window.confirm` → PUT number update
+- Delete → confirm → DELETE; 404 case shows error and refetches the list
+- Immutable single-item update: `map(p => p.id === id ? returned : p)`
