@@ -19,6 +19,29 @@ const App = () => {
     personsService.getAll().then(setPersons)
   }, [])
 
+  const Person = ({ person, handleDelete }) => (
+  <li>
+            {persons.map((person) => (
+          <Person key={person.id} person={person} handleDelete={handleDelete} />
+        ))}
+  </li>
+)
+
+  const handleDelete = (person) => {
+    if (window.confirm(`Delete ${person.name}?`)) {
+      personsService
+        .remove(person.id)
+        .then(() => {
+          setPersons(persons.filter((p) => p.id !== person.id))
+          showNotification(`Deleted ${person.name}`, 'success')
+        })
+        .catch(() => {
+          showNotification(`Information of ${person.name} has already been removed from server`, 'error')
+          personsService.getAll().then(setPersons)
+        })
+    }
+  }
+
   const showNotification = (text, type) => {
     setMessage(text)
     setMessageType(type)
