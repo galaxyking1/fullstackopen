@@ -1,12 +1,9 @@
 import { useState, useEffect } from 'react'
 import personsService from './services/persons'
-
-const Notification = ({ message, type }) => {
-  if (message === null) {
-    return null
-  }
-  return <div className={type}>{message}</div>
-}
+import Notification from './components/Notification'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -98,30 +95,17 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <Notification message={message} type={messageType} />
-      <div>
-        filter shown with <input value={filter} onChange={handleFilterChange} />
-      </div>
+      <Filter value={filter} onChange={handleFilterChange} />
       <h3>Add a new</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm
+        onSubmit={addPerson}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
       <h3>Numbers</h3>
-      <ul>
-        {personsToShow.map((person) => (
-          <li key={person.id}>
-            {person.name} {person.number}{' '}
-            <button onClick={() => handleDelete(person)}>delete</button>
-          </li>
-        ))}
-      </ul>
+      <Persons persons={personsToShow} handleDelete={handleDelete} />
     </div>
   )
 }
