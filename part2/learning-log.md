@@ -32,3 +32,12 @@
 ## Commit ↔ Exercise Map (corrected after course renumbering audit)
 - 433f14e → 2.6 | 6062d7e → 2.7+2.8 | 033385b → 2.11+2.13
 - b913290 → 2.12+2.15 | 735e3fc → 2.14 | 2.9 commit → 2.9 | 2.10 commit → 2.10
+## ✅ Exercises 2.16–2.20 — Styles & Countries (live-numbered from 2e page)
+- 2.16: success notifications with 5s auto-clear (commit b913290)
+- 2.17: failed PUT/DELETE → red error banner + recovery; two-browser 404 test passed (b913290, 735e3fc)
+- 2.18: countries search + too-many guard + single-match details (flag, languages)
+- 2.19: show buttons + selected state
+- 2.20: capital weather (Open-Meteo, key-less) — API keys belong in env vars, never in source
+
+## Commit ↔ Exercise Map (2e)
+- b913290 → 2.16+2.17 | 735e3fc → 2.17 | scaffold+2.18 commit → 2.18 | 2.19 commit → 2.19 | 2.20 commit → 2.20
