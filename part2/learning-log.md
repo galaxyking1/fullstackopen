@@ -23,3 +23,12 @@
 - Duplicate name → `window.confirm` → PUT number update
 - Delete → confirm → DELETE; 404 case shows error and refetches the list
 - Immutable single-item update: `map(p => p.id === id ? returned : p)`
+## ✅ Exercises 2.9–2.10 — Phonebook: filter & component extraction
+- 2.9: case-insensitive search filter (`personsToShow` derived in App, input outside the form)
+- 2.10: extracted Filter / PersonForm / Persons / Notification modules; state + handlers stay in App
+- Event-handler props follow onXxx / handleXxx convention
+- Never define a component inside another component (remount + state-loss bugs)
+
+## Commit ↔ Exercise Map (corrected after course renumbering audit)
+- 433f14e → 2.6 | 6062d7e → 2.7+2.8 | 033385b → 2.11+2.13
+- b913290 → 2.12+2.15 | 735e3fc → 2.14 | 2.9 commit → 2.9 | 2.10 commit → 2.10
