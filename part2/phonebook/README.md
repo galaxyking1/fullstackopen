@@ -1,16 +1,18 @@
-# React + Vite
+# Phonebook — Full Stack Open Part 2 (Exercises 2.6–2.17)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Full CRUD phonebook: React + Vite frontend, json-server REST backend (port 3001).
 
-Currently, two official plugins are available:
+## Features
+- Add persons (POST), replace numbers after confirm (PUT), delete with confirm (DELETE)
+- Case-insensitive search filter
+- Styled success/error notifications with 5s auto-clear
+- 404 recovery: failed update/delete shows red banner and re-syncs from server
+- All backend communication isolated in `src/services/persons.js`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run locally
+    npm install
+    npx json-server --port 3001 --watch db.json   # terminal 1 (backend)
+    npm run dev                                    # terminal 2 (frontend)
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech
+React, Vite, axios, useEffect, json-server
