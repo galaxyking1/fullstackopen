@@ -3,6 +3,10 @@ const app = express()
 
 app.use(express.json())
 
+const morgan = require('morgan')
+
+app.use(morgan('tiny'))
+
 app.post('/api/persons', (request, response) => {
   const body = request.body
 
