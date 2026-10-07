@@ -1,0 +1,5 @@
+### Delete person 1
+DELETE http://localhost:3001/api/persons/1
+
+### Delete non-existent person
+DELETE http://localhost:3001/api/persons/999
