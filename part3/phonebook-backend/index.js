@@ -6,6 +6,7 @@ const app = express()
 
 app.use(cors())
 app.use(express.json())
+app.use(express.static('dist'))
 
 // 1. Create a custom token called 'body'
 morgan.token('body', (request) => {
