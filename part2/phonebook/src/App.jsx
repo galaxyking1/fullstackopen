@@ -27,45 +27,38 @@ const App = () => {
   const handleNumberChange = (event) => setNewNumber(event.target.value)
   const handleFilterChange = (event) => setFilter(event.target.value)
 
-  const addPerson = (event) => {
+    const addPerson = (event) => {
     event.preventDefault()
-    const existing = persons.find((p) => p.name === newName)
+    
+    const existingPerson = persons.find(p => p.name === newName)
 
-    if (existing) {
-      if (
-        window.confirm(
-          `${newName} is already added to phonebook, replace the old number with a new one?`
-        )
-      ) {
-        const changed = { ...existing, number: newNumber }
-        personsService
-          .update(existing.id, changed)
-          .then((returned) => {
-            setPersons(persons.map((p) => (p.id === existing.id ? returned : p)))
-            showNotification(`Updated ${returned.name}`, 'success')
-          })
-          .catch(() => {
-            showNotification(
-              `Information of ${existing.name} has already been removed from server`,
-              'error'
-            )
-            setPersons(persons.filter((p) => p.id !== existing.id))
+    if (existingPerson) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        const changedPerson = { ...existingPerson, number: newNumber }
+        
+        personService
+          .update(existingPerson.id, changedPerson)
+          .then(returnedPerson => {
+            setPersons(persons.map(p => p.id !== existingPerson.id ? p : returnedPerson))
+            setNewName('')
+            setNewNumber('')
           })
       }
-      setNewName('')
-      setNewNumber('')
       return
     }
 
-    personsService
-      .create({ name: newName, number: newNumber })
-      .then((returned) => {
-        setPersons(persons.concat(returned))
+    const personObject = { name: newName, number: newNumber }
+    personService
+      .create(personObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
         setNewName('')
         setNewNumber('')
-        showNotification(`Added ${returned.name}`, 'success')
       })
-      .catch(() => showNotification('Could not add person to server', 'error'))
+      .catch(error => {
+        // This will catch the 400 error from your backend validation!
+        alert(error.response.data.error) 
+      })
   }
 
   const handleDelete = (person) => {

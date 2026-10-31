@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 const Person = require('./models/person')
 
 const app = express()
@@ -13,62 +14,100 @@ morgan.token('body', (req) => {
 })
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
-// 3.13 — every read now comes from MongoDB
+// --- MONGODB CONNECTION ---
+const url = process.env.MONGODB_URI
+console.log('connecting to', url)
+mongoose.set('strictQuery', false)
+
+mongoose.connect(url, { family: 4 })
+  .then(() => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
+
+// --- ROUTES ---
+
+// GET all persons
 app.get('/api/persons', (req, res) => {
   Person.find({}).then((persons) => {
     res.json(persons)
   })
 })
 
+// GET info
 app.get('/info', (req, res) => {
   Person.countDocuments({}).then((count) => {
     res.send(`<p>Phonebook has info for ${count} people</p><p>${new Date()}</p>`)
   })
 })
 
-app.get('/api/persons/:id', (req, res) => {
+// GET single person
+app.get('/api/persons/:id', (req, res, next) => {
   Person.findById(req.params.id)
     .then((person) => {
       person ? res.json(person) : res.status(404).end()
     })
-    .catch(() => res.status(400).send({ error: 'malformatted id' }))
+    .catch((error) => next(error))
 })
 
-// 3.14 — new entries are saved to MongoDB
-app.post('/api/persons', (req, res) => {
+// POST new person (with duplicate check)
+app.post('/api/persons', (req, res, next) => {
   const body = req.body
 
   if (!body.name || !body.number) {
     return res.status(400).json({ error: 'name or number missing' })
   }
 
-  Person.findOne({ name: body.name }).then((existing) => {
-    if (existing) {
-      return res.status(400).json({ error: 'name must be unique' })
-    }
-
-    const person = new Person({ name: body.name, number: body.number })
-
-    person.save().then((savedPerson) => {
-      res.status(201).json(savedPerson)
+  Person.findOne({ name: body.name })
+    .then((existing) => {
+      if (existing) {
+        return res.status(400).json({ error: 'name must be unique' })
+      }
+      const person = new Person({ name: body.name, number: body.number })
+      return person.save().then((savedPerson) => res.status(201).json(savedPerson))
     })
-  })
+    .catch((error) => next(error))
 })
 
-// DELETE still uses the old array — 3.15 upgrades this
-let persons = [
-  { id: 1, name: 'Arto Hellas', number: '040-123456' },
-  { id: 2, name: 'Ada Lovelace', number: '39-44-5323523' },
-  { id: 3, name: 'Dan Abramov', number: '12-43-234345' },
-  { id: 4, name: 'Mary Poppendieck', number: '39-23-6423122' },
-]
+// PUT update person
+app.put('/api/persons/:id', (req, res, next) => {
+  const { name, number } = req.body
 
-app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  persons = persons.filter((p) => p.id !== id)
-  res.status(204).end()
+  Person.findByIdAndUpdate(
+    req.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: 'query' }
+  )
+    .then((updatedPerson) => {
+      updatedPerson ? res.json(updatedPerson) : res.status(404).end()
+    })
+    .catch((error) => next(error))
 })
 
+// DELETE person
+app.delete('/api/persons/:id', (req, res, next) => {
+  Person.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204).end())
+    .catch((error) => next(error))
+})
+
+// --- ERROR HANDLER MIDDLEWARE ---
+const errorHandler = (error, req, res, next) => {
+  console.error(error.message)
+
+  if (error.name === 'CastError') {
+    return res.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return res.status(400).json({ error: error.message })
+  }
+
+  next(error)
+}
+app.use(errorHandler)
+
+// --- START SERVER ---
 const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
